@@ -8,8 +8,6 @@ function Bullet(game, x, y) {
 
   this.vx = 10;
   this.vy = 1;
-
-  this.gravity = 0.25;
 }
 
 Bullet.prototype.draw = function() {
@@ -23,8 +21,6 @@ Bullet.prototype.draw = function() {
 Bullet.prototype.move = function() {
   this.x += this.vx;
 
-  this.vy += this.gravity;
-  this.y += this.vy;
 
   if (this.y > this.game.player.y0 + this.game.player.h) {
     this.vy *= -1;

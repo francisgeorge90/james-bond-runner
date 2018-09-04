@@ -19,14 +19,9 @@ Game.prototype.start = function() {
     }
 
     // controlamos la velocidad de generación de obstáculos
-    if (this.framesCounter % 150 === 0) {
-      // this.generateObstacle();
+    if (this.framesCounter % 120 === 0) {
       this.generatePlatform();
     } 
-
-    // if (this.framesCounter % 50 === 0) {
-      
-    // }
 
     this.score += 0.01;
     
@@ -34,7 +29,6 @@ Game.prototype.start = function() {
     this.draw();
 
     // eliminamos obstáculos fuera del canvas
-    // this.clearObstacles();
     this.clearPlatforms();
 
     // if (this.isCollision()) {
@@ -63,58 +57,28 @@ Game.prototype.reset = function() {
   this.player = new Player(this);
   this.helicopter = new Helicopter(this);
   this.framesCounter = 0;
-  this.obstacles = [];
   this.platforms = [];
   this.score = 0;
 };
 
-// Game.prototype.isCollision = function() {
-//   // colisiones genéricas 
-//   // (p.x + p.w > o.x && o.x + o.w > p.x && p.y + p.h > o.y && o.y + o.h > p.y )
-//   return this.obstacles.some(function(obstacle) {
-//     return (
-//       ((this.player.x + this.player.w) >= obstacle.x &&
-//        this.player.x < (obstacle.x + obstacle.w) &&
-//        this.player.y + (this.player.h - 20) >= obstacle.y)
-//     );
-//   }.bind(this));
-// };
-
 Game.prototype.isLevel = function() {
-  // colisiones genéricas 
-  // (p.x + p.w > o.x && o.x + o.w > p.x && p.y + p.h > o.y && o.y + o.h > p.y )
-  this.platforms.forEach(function(platform) {
+
+  this.platforms.some(function(platform) {
 
     if ((this.player.x + this.player.w) >= platform.x && 
-    this.player.x < (platform.x + platform.w) &&
+    (this.player.x + this.player.w) < (platform.x + platform.w) &&
     (this.player.y + this.player.h - 10) < platform.y) {
       this.player.y = platform.y - this.player.h;
+      console.log("on the bar")
       }
-
-    // if ((this.player.y + this.player.h) >= platform.y &&
-    // this.player.y < (platform.y + platform.h)) {
-    //   this.player.y = platform.y - this.player.h;
-    // } else {
-    //   this.player.y = this.player.y0;
-    // }
     
 }.bind(this));}
-
-Game.prototype.clearObstacles = function() {
-  this.obstacles = this.obstacles.filter(function(obstacle) {
-    return obstacle.x >= 0;
-  });
-};
 
 Game.prototype.clearPlatforms = function() {
   this.platforms = this.platforms.filter(function(platform) {
     return platform.x >= 0;
   });
 };
-
-// Game.prototype.generateObstacle = function() {
-//   this.obstacles.push(new Obstacle(this));
-// };
 
 Game.prototype.generatePlatform = function() {
   this.platforms.push(new Platform(this));
@@ -127,6 +91,7 @@ Game.prototype.clear = function() {
 Game.prototype.draw = function() {
   this.background.draw();
   this.player.draw();
+  this.helicopter.draw();
   // this.obstacles.forEach(function(obstacle) { obstacle.draw(); });
   this.platforms.forEach(function(platform) { platform.draw(); });
   this.drawScore();  

@@ -1,27 +1,33 @@
 function Helicopter(game) {
   this.game = game;
  
-  this.x = 500;
+  this.x = 350;
 
   // guardar posición original (suelo)
   this.y0 = this.game.canvas.height * 0.1;
   this.y = this.y0;
 
   this.img = new Image();
-  this.img.src = 'img/helicopter';
+  this.img.src = 'img/helicopter_move.png';
   
   // número de imágenes diferentes
-  this.img.frames = 4;
+  this.img.frames = 7;
   this.img.frameIndex = 0;
 
   // medidas de la imagen a representar en el canvas
-  this.w = 423;
-  this.h = 153;
+  this.w = 180;
+  this.h = 97;
 
   this.vy = 1;
 
   this.bullets = [];
 }
+
+var W_KEY = 87;
+var D_KEY = 68;
+var A_KEY = 65;
+var S_KEY = 83;
+var E_KEY = 69;
 
 Helicopter.prototype.draw = function() {
   // Documentación drawImage:
@@ -39,6 +45,36 @@ Helicopter.prototype.draw = function() {
   );
 
   this.animateImg();
+
+  this.bullets = this.bullets.filter(function(bullet) {
+    return bullet.x < this.game.canvas.width;
+  }.bind(this));
+
+  this.bullets.forEach(function(bullet) {
+    bullet.draw();
+    bullet.move();
+  });
+};
+
+Helicopter.prototype.setListeners = function() {
+  document.onkeydown = function(event) {
+    if (event.keyCode === W_KEY && this.y == this.y0) {
+      this.y -= 50;
+      this.vy -= 10;
+    } else if (event.keyCode == E_KEY) {
+      this.shoot();
+    } else if (event.keyCode == D_KEY) {
+      this.x += 10;
+    } else if (event.keyCode == A_KEY) {
+      this.x -= 10;
+    }
+  }.bind(this);
+};
+
+Helicopter.prototype.shoot = function() {
+  var bullet = new Bullet(this.game, this.x + this.w, this.y + this.h / 2);
+
+  this.bullets.push(bullet);
 };
 
 

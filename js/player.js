@@ -96,12 +96,11 @@ Player.prototype.move = function() {
   if (this.y >= this.y0) {
     this.vy = 1;
     this.y = this.y0;
+    console.log("off the bar")
   } else {
     this.vy += gravity;
     this.y += this.vy;
   }
-
-  // console.log(platform.y);
 
   
 
