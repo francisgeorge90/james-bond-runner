@@ -1,11 +1,11 @@
-function Platform(game) {
+function Platform(game, max, min) {
   this.game = game;
 
-  this.w = 200;
+  this.w = 300;
   this.h = 15;
 
-  this.maxRandomY = 550;
-  this.minRandomY = 500;
+  this.maxRandomY = max;
+  this.minRandomY = min;
 
   this.dx = 3;
 

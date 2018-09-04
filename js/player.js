@@ -31,8 +31,6 @@ var LEFT_KEY = 37;
 var SPACE = 32;
 
 Player.prototype.draw = function() {
-  // Documentación drawImage:
-  // https://developer.mozilla.org/es/docs/Web/API/CanvasRenderingContext2D/drawImage
   this.game.ctx.drawImage(
     this.img,
     this.img.frameIndex * Math.floor(this.img.width / this.img.frames),
@@ -59,7 +57,7 @@ Player.prototype.draw = function() {
 
 Player.prototype.setListeners = function() {
   document.onkeydown = function(event) {
-    if (event.keyCode === TOP_KEY && this.y == this.y0) {
+    if (event.keyCode === TOP_KEY) {
       this.y -= 50;
       this.vy -= 10;
     } else if (event.keyCode == SPACE) {

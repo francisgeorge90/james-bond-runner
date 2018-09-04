@@ -2,7 +2,8 @@ function Game(canvadId) {
   this.canvas = document.getElementById(canvadId);
   this.ctx = this.canvas.getContext("2d");
   this.fps = 60;
-
+  this.maxRandomY = 550;
+  this.minRandomY = 450;
 
   this.reset();
 }
@@ -21,6 +22,14 @@ Game.prototype.start = function() {
     // controlamos la velocidad de generación de obstáculos
     if (this.framesCounter % 120 === 0) {
       this.generatePlatform();
+
+      var platformState = true;
+      
+      if (this.minRandomY <= 400 && platformState == true) {
+        platformState = false;
+      } else if (platformState == true)
+      this.maxRandomY -= 50;
+      this.minRandomY -= 50;
     } 
 
     this.score += 0.01;
@@ -31,9 +40,9 @@ Game.prototype.start = function() {
     // eliminamos obstáculos fuera del canvas
     this.clearPlatforms();
 
-    // if (this.isCollision()) {
-    //   this.gameOver();
-    // }
+    if (this.isHeliHit()) {
+      this.gameOver();
+    }
     this.isLevel();
 
   }.bind(this), 1000 / this.fps);
@@ -65,9 +74,13 @@ Game.prototype.isLevel = function() {
 
   this.platforms.some(function(platform) {
 
-    if ((this.player.x + this.player.w) >= platform.x && 
-    (this.player.x + this.player.w) < (platform.x + platform.w) &&
-    (this.player.y + this.player.h - 10) < platform.y) {
+    if(this.player.x + this.player.w > platform.x && 
+      platform.x + platform.w > this.player.x && 
+      this.player.y + this.player.h > platform.y && 
+      platform.y + platform.h > this.player.y ) {
+        
+      this.player.vy = 0;
+  
       this.player.y = platform.y - this.player.h;
       console.log("on the bar")
       }
@@ -81,7 +94,17 @@ Game.prototype.clearPlatforms = function() {
 };
 
 Game.prototype.generatePlatform = function() {
-  this.platforms.push(new Platform(this));
+  this.platforms.push(new Platform(this, this.maxRandomY, this.minRandomY));
+};
+
+Game.prototype.isHeliHit = function() {
+  return this.player.bullets.some(function(bullet) {
+    return (
+      ((this.helicopter.x + this.helicopter.w) >= bullet.x &&
+       this.helicopter.x < (bullet.x + bullet.w) &&
+       this.helicopter.y + this.helicopter.h <= bullet.y)
+    );
+  }.bind(this));
 };
 
 Game.prototype.clear = function() {
@@ -94,7 +117,8 @@ Game.prototype.draw = function() {
   this.helicopter.draw();
   // this.obstacles.forEach(function(obstacle) { obstacle.draw(); });
   this.platforms.forEach(function(platform) { platform.draw(); });
-  this.drawScore();  
+  this.drawScore(); 
+   
 };
 
 Game.prototype.moveAll = function() {

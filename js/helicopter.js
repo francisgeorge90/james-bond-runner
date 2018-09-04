@@ -18,9 +18,9 @@ function Helicopter(game) {
   this.w = 180;
   this.h = 97;
 
-  this.vy = 1;
-
   this.bullets = [];
+  
+  // this.setListeners();
 }
 
 var W_KEY = 87;
@@ -58,21 +58,22 @@ Helicopter.prototype.draw = function() {
 
 Helicopter.prototype.setListeners = function() {
   document.onkeydown = function(event) {
-    if (event.keyCode === W_KEY && this.y == this.y0) {
-      this.y -= 50;
-      this.vy -= 10;
+    if (event.keyCode == W_KEY) {
+      this.y -= 10;
     } else if (event.keyCode == E_KEY) {
       this.shoot();
     } else if (event.keyCode == D_KEY) {
       this.x += 10;
     } else if (event.keyCode == A_KEY) {
       this.x -= 10;
+    } else if (event.keyCode == S_KEY) {
+      this.y += 10;
     }
   }.bind(this);
 };
 
 Helicopter.prototype.shoot = function() {
-  var bullet = new Bullet(this.game, this.x + this.w, this.y + this.h / 2);
+  var bullet = new BulletHeli(this.game, this.x + 120, this.y + 150 / 2);
 
   this.bullets.push(bullet);
 };

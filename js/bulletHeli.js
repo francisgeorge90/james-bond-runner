@@ -1,4 +1,4 @@
-function Bullet(game, x, y) {
+function BulletHeli(game, x, y) {
   this.game = game;
 
   this.x = x;
@@ -7,10 +7,10 @@ function Bullet(game, x, y) {
   this.r = 5;
 
   this.vx = 10;
-  this.vy = -10;
+  this.vy = +10;
 }
 
-Bullet.prototype.draw = function() {
+BulletHeli.prototype.draw = function() {
   this.game.ctx.beginPath();
   this.game.ctx.fillStyle = "red";
   this.game.ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
@@ -18,12 +18,12 @@ Bullet.prototype.draw = function() {
   this.game.ctx.closePath();
 }
 
-Bullet.prototype.move = function() {
+BulletHeli.prototype.move = function() {
   // this.x += this.vx;
   this.y += this.vy
 
 
-  if (this.y > this.game.player.y0 + this.game.player.h) {
-    this.vy *= -1;
-  }
+  // if (this.y > this.game.player.y0 + this.game.player.h) {
+  //   this.vy *= -1;
+  // }
 };
