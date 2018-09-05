@@ -69,13 +69,13 @@ Helicopter.prototype.animateImg = function() {
   }
 };
 
-// Helicopter.prototype.platformCollision = function() {
-//   return this.player.bullets.some(function(bullet) {
-//     return (
-//       (this.helicopter.x + this.helicopter.w > bullet.x && 
-//         bullet.x > this.helicopter.x && 
-//         this.helicopter.y + this.helicopter.h > bullet.y && 
-//         bullet.y > this.helicopter.y )
-//     );
-//   }.bind(this));
-// };
+Helicopter.prototype.platformCollision = function() {
+  return this.game.platforms.some(function(platform) {
+    return (
+      (this.game.helicopter.x + this.game.helicopter.w -15 > platform.x && 
+        platform.x > this.game.helicopter.x && 
+        this.game.helicopter.y + this.game.helicopter.h-9> platform.y && 
+        this.game.helicopter.y < platform.y)
+    );
+  }.bind(this));
+};

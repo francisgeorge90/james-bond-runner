@@ -8,7 +8,7 @@ function Player(game) {
   this.y = this.y0;
 
   this.img = new Image();
-  this.img.src = 'img/Complete.png';
+  this.img.src = 'img/bond_right.png';
   
   // número de imágenes diferentes
   this.img.frames = 8;
@@ -23,6 +23,8 @@ function Player(game) {
   this.bullets = [];
 
   this.playerPoints = 0;
+
+  this.isJumping = false;
 
   this.game.setListeners();
 }
@@ -71,6 +73,7 @@ Player.prototype.animateImg = function() {
 };
 
 Player.prototype.move = function() {
+  console.log(this.vy)
   // Aumenta la velocidad en el eje y.
   var gravity = 0.4;
 
@@ -78,6 +81,7 @@ Player.prototype.move = function() {
   if (this.y >= this.y0) {
     this.vy = 1;
     this.y = this.y0;
+    this.isJumping = false;
   } else {
     this.vy += gravity;
     this.y += this.vy;
