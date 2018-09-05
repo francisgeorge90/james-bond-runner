@@ -15,8 +15,8 @@ function Player(game) {
   this.img.frameIndex = 0;
 
   // medidas de la imagen a representar en el canvas
-  this.w = 50;
-  this.h = 75;
+  this.w = 31 * 2;
+  this.h = 47 * 2;
 
   this.vy = 1;
 
@@ -87,4 +87,22 @@ Player.prototype.move = function() {
     this.y += this.vy;
   }
 
+};
+
+Player.prototype.isLevel = function() {
+  this.game.platforms.some(
+    function(platform) {
+      if (
+        this.x + this.w > platform.x &&
+        platform.x + platform.w > this.x &&
+        this.y + this.h > platform.y &&
+        platform.y + platform.h > this.y &&
+        this.vy > 0
+      ) {
+        this.vy = 0;
+        this.y = platform.y - this.h;
+        this.isJumping = false;
+      }
+    }.bind(this)
+  );
 };

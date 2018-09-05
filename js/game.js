@@ -81,7 +81,7 @@ Game.prototype.start = function() {
       this.heliBulletsCollision();
       this.playerBulletsCollision();
 
-      this.isLevel();
+      this.player.isLevel();
     }.bind(this),
     1000 / this.fps
   );
@@ -174,10 +174,12 @@ Game.prototype.characterMove = function() {
   if (this.dPressed) {
     this.helicopter.x += 10;
     this.helicopter.img.src = "img/helicopter_move.png";
+    this.helicopter.img.frames = 7;
   }
   if (this.aPressed) {
     this.helicopter.x -= 10;
     this.helicopter.img.src = "img/helicopter_left.png";
+    this.helicopter.img.frames = 7;
   }
   if (this.sPressed) {
     this.helicopter.y += 10;
@@ -194,33 +196,20 @@ Game.prototype.characterMove = function() {
   if (this.rightPressed) {
     this.player.x += 10;
     this.player.img.src = "img/bond_right.png";
+    this.player.img.frames = 8;
   }
   if (this.leftPressed) {
     this.player.x -= 10;
     this.player.img.src = "img/bond_left.png";
+    this.player.img.frames = 8;
   }
   if (this.spacePressed) {
     this.player.shoot();
     this.gunshot.play();
-  }
-};
+    this.player.img.src = "img/james_shoot.png";
+    this.player.img.frames = 5;
 
-Game.prototype.isLevel = function() {
-  this.platforms.some(
-    function(platform) {
-      if (
-        this.player.x + this.player.w > platform.x &&
-        platform.x + platform.w > this.player.x &&
-        this.player.y + this.player.h > platform.y &&
-        platform.y + platform.h > this.player.y &&
-        this.player.vy > 0
-      ) {
-        this.player.vy = 0;
-        this.player.y = platform.y - this.player.h;
-        this.player.isJumping = false;
-      }
-    }.bind(this)
-  );
+  }
 };
 
 Game.prototype.heliBulletsCollision = function() {

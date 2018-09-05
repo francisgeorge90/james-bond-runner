@@ -21,9 +21,4 @@ BulletHeli.prototype.draw = function() {
 BulletHeli.prototype.move = function() {
   // this.x += this.vx;
   this.y += this.vy
-
-
-  // if (this.y > this.game.player.y0 + this.game.player.h) {
-  //   this.vy *= -1;
-  // }
 };
