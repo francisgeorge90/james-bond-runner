@@ -9,11 +9,13 @@ function Game(canvadId) {
   this.A_KEY = 65;
   this.S_KEY = 83;
   this.E_KEY = 69;
+  this.DANCING = 75;
   //PLAYER KEYS
   this.TOP_KEY = 38;
   this.RIGHT_KEY = 39;
   this.LEFT_KEY = 37;
   this.SPACE = 32;
+  this.MOONWALK = 77;
   this.wPressed = false;
   this.dPressed = false;
   this.aPressed = false;
@@ -23,6 +25,8 @@ function Game(canvadId) {
   this.rightPressed = false;
   this.leftPressed = false;
   this.spacePressed = false;
+  this.moonwalk = false;
+  this.dancing = false;
 
   this.reset();
 }
@@ -145,6 +149,10 @@ Game.prototype.setListeners = function() {
       this.rightPressed = true;
     } else if (event.keyCode == this.LEFT_KEY) {
       this.leftPressed = true;
+    } else if (event.keyCode == this.MOONWALK) {
+      this.moonwalk = true;
+    } else if (event.keyCode == this.DANCING) {
+      this.dancing = true;
     }
   }.bind(this);
 
@@ -167,6 +175,10 @@ Game.prototype.setListeners = function() {
       this.rightPressed = false;
     } else if (event.keyCode == this.LEFT_KEY) {
       this.leftPressed = false;
+    } else if (event.keyCode == this.MOONWALK) {
+      this.moonwalk = false;
+    } else if (event.keyCode == this.DANCING) {
+      this.dancing = false;
     }
   }.bind(this);
 };
@@ -222,7 +234,19 @@ Game.prototype.characterMove = function() {
     this.player.img.frames = 5;
     this.player.w = 31 * 2;
     this.player.h = 47 * 2;
-
+  }
+  if (this.moonwalk) {
+    this.player.x -= 10;
+    this.player.img.src = "img/bond_right.png";
+    this.player.img.frames = 8;
+    this.player.w = 31 * 2;
+    this.player.h = 47 * 2;
+  }
+  if (this.dancing) {
+    this.player.img.src = "img/james_dancing.png";
+    this.player.img.frames = 8;
+    this.player.w = 27 * 2;
+    this.player.h = 49 * 2;
   }
 };
 
