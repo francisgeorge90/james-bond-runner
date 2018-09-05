@@ -68,3 +68,14 @@ Helicopter.prototype.animateImg = function() {
     if (this.img.frameIndex > 2) this.img.frameIndex = 0;
   }
 };
+
+// Helicopter.prototype.platformCollision = function() {
+//   return this.player.bullets.some(function(bullet) {
+//     return (
+//       (this.helicopter.x + this.helicopter.w > bullet.x && 
+//         bullet.x > this.helicopter.x && 
+//         this.helicopter.y + this.helicopter.h > bullet.y && 
+//         bullet.y > this.helicopter.y )
+//     );
+//   }.bind(this));
+// };

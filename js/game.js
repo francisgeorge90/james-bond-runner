@@ -2,8 +2,6 @@ function Game(canvadId) {
   this.canvas = document.getElementById(canvadId);
   this.ctx = this.canvas.getContext("2d");
   this.fps = 60;
-  this.maxRandomY = 550;
-  this.minRandomY = 450;
 
   //HELI KEYS
   this.W_KEY = 87;
@@ -41,28 +39,19 @@ Game.prototype.start = function() {
     }
 
     // controlamos la velocidad de generación de obstáculos
-    if (this.framesCounter % 120 === 0) {
+    if (this.framesCounter % 160 === 0) {
       this.generatePlatform();
-
-      var platformState = true;
-      
-      if (this.minRandomY <= 400 && platformState == true) {
-        platformState = false;
-      } else if (platformState == true)
-      this.minRandomY -= 25;
     } 
-
     
     this.moveAll();
     this.draw();
     
-    // eliminamos obstáculos fuera del canvas
     this.clearPlatforms();
     
     if (this.isHeliHit()) {
       if (this.player.y > 300) {
       this.player.playerPoints += 1;
-      } else if (this.player.y < 350) {
+      } else if (this.player.y < 450) {
       this.player.playerPoints += 2;
       this.drawBonusZone();
       }  
@@ -78,6 +67,9 @@ Game.prototype.start = function() {
         this.gameOver();
       }
     }
+
+    this.heliBulletsCollision();
+    this.playerBulletsCollision();
 
     this.isLevel();
 
@@ -101,7 +93,7 @@ Game.prototype.gameWon = function() {
 Game.prototype.gameOver = function() {
   this.stop();
   
-  if(confirm("GAME OVER. The Helicoper won! Play again?")) {
+  if(confirm("HELICOPTER WON!! Play again?")) {
     this.reset();
     this.start();
   }
@@ -161,20 +153,42 @@ Game.prototype.characterMove = function() {
 }
 
 Game.prototype.isLevel = function() {
-
   this.platforms.some(function(platform) {
-
     if(this.player.x + this.player.w > platform.x && 
       platform.x + platform.w > this.player.x && 
       this.player.y + this.player.h > platform.y && 
       platform.y + platform.h > this.player.y ) {
 
       this.player.vy = 0;
-  
       this.player.y = platform.y - this.player.h;
       }
-    
 }.bind(this));}
+
+Game.prototype.heliBulletsCollision = function() {
+  for (var i = 0; i < this.platforms.length; i++) {
+    for (var j = 0; j < this.helicopter.bullets.length; j++) {
+      if (this.platforms[i].x + this.platforms[i].w > this.helicopter.bullets[j].x && 
+        this.helicopter.bullets[j].x > this.platforms[i].x && 
+        this.platforms[i].y + this.platforms[i].h > this.helicopter.bullets[j].y && 
+        this.helicopter.bullets[j].y > this.platforms[i].y) {
+          this.helicopter.bullets.splice(j);
+        }
+    }
+  }  
+}
+
+Game.prototype.playerBulletsCollision = function() {
+  for (var i = 0; i < this.platforms.length; i++) {
+    for (var j = 0; j < this.player.bullets.length; j++) {
+      if (this.platforms[i].x + this.platforms[i].w > this.player.bullets[j].x && 
+        this.player.bullets[j].x > this.platforms[i].x && 
+        this.platforms[i].y + this.platforms[i].h > this.player.bullets[j].y && 
+        this.player.bullets[j].y > this.platforms[i].y) {
+          this.player.bullets.splice(j);
+        }
+    }
+  }  
+}
 
 Game.prototype.clearPlatforms = function() {
   this.platforms = this.platforms.filter(function(platform) {
@@ -203,7 +217,7 @@ Game.prototype.isPlayerHit = function() {
       (this.player.x + this.player.w > bullet.x && 
         bullet.x > this.player.x && 
         this.player.y + this.player.h > bullet.y && 
-        bullet.y > this.player.y )
+        bullet.y > this.player.y)
     );
   }.bind(this));
 };

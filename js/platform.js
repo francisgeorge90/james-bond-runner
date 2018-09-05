@@ -4,13 +4,10 @@ function Platform(game, max, min) {
   this.w = 300;
   this.h = 15;
 
-  this.maxRandomY = max;
-  this.minRandomY = min;
-
   this.dx = 3;
 
   this.x = this.game.canvas.width;
-  this.y = Math.floor(Math.random() * (this.maxRandomY - this.minRandomY) + this.minRandomY);
+  this.y = Math.floor(Math.random() * (500 - 350) + 350);
 }
 
 Platform.prototype.draw = function() {
