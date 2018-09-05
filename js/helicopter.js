@@ -19,8 +19,10 @@ function Helicopter(game) {
   this.h = 97;
 
   this.bullets = [];
+
+  this.heliLives = 10;
   
-  // this.setListeners();
+  this.setListeners();
 }
 
 var W_KEY = 87;

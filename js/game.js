@@ -28,21 +28,24 @@ Game.prototype.start = function() {
       if (this.minRandomY <= 400 && platformState == true) {
         platformState = false;
       } else if (platformState == true)
-      this.maxRandomY -= 50;
-      this.minRandomY -= 50;
+      this.minRandomY -= 25;
     } 
 
-    this.score += 0.01;
     
     this.moveAll();
     this.draw();
-
+    
     // eliminamos obstáculos fuera del canvas
     this.clearPlatforms();
-
+    
     if (this.isHeliHit()) {
-      this.gameOver();
+      this.helicopter.heliLives -= 1;
     }
+    
+    if (this.isPlayerHit()) {
+      console.log("he's been hit!")
+    }
+
     this.isLevel();
 
   }.bind(this), 1000 / this.fps);
@@ -67,7 +70,7 @@ Game.prototype.reset = function() {
   this.helicopter = new Helicopter(this);
   this.framesCounter = 0;
   this.platforms = [];
-  this.score = 0;
+  // this.heliLives = 10;
 };
 
 Game.prototype.isLevel = function() {
@@ -78,7 +81,7 @@ Game.prototype.isLevel = function() {
       platform.x + platform.w > this.player.x && 
       this.player.y + this.player.h > platform.y && 
       platform.y + platform.h > this.player.y ) {
-        
+
       this.player.vy = 0;
   
       this.player.y = platform.y - this.player.h;
@@ -100,9 +103,21 @@ Game.prototype.generatePlatform = function() {
 Game.prototype.isHeliHit = function() {
   return this.player.bullets.some(function(bullet) {
     return (
-      ((this.helicopter.x + this.helicopter.w) >= bullet.x &&
-       this.helicopter.x < (bullet.x + bullet.w) &&
-       this.helicopter.y + this.helicopter.h <= bullet.y)
+      (this.helicopter.x + this.helicopter.w > bullet.x && 
+        bullet.x > this.helicopter.x && 
+        this.helicopter.y + this.helicopter.h > bullet.y && 
+        bullet.y > this.helicopter.y )
+    );
+  }.bind(this));
+};
+
+Game.prototype.isPlayerHit = function() {
+  return this.helicopter.bullets.some(function(bullet) {
+    return (
+      (this.player.x + this.player.w > bullet.x && 
+        bullet.x > this.player.x && 
+        this.player.y + this.player.h > bullet.y && 
+        bullet.y > this.player.y )
     );
   }.bind(this));
 };
@@ -117,7 +132,7 @@ Game.prototype.draw = function() {
   this.helicopter.draw();
   // this.obstacles.forEach(function(obstacle) { obstacle.draw(); });
   this.platforms.forEach(function(platform) { platform.draw(); });
-  this.drawScore(); 
+  this.drawHeliLives(); 
    
 };
 
@@ -128,8 +143,9 @@ Game.prototype.moveAll = function() {
   this.platforms.forEach(function(platform) { platform.move(); });
 };
 
-Game.prototype.drawScore = function() {
+Game.prototype.drawHeliLives = function() {
+  console.log(this.helicopter.heliLives)
   this.ctx.font = "30px sans-serif";
   this.ctx.fillStyle = "green";
-  this.ctx.fillText(Math.floor(this.score), 50, 50);
+  this.ctx.fillText(Math.floor(this.helicopter.heliLives), 50, 50);
 }
