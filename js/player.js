@@ -24,13 +24,8 @@ function Player(game) {
 
   this.playerPoints = 0;
 
-  this.setListeners();
+  this.game.setListeners();
 }
-
-var TOP_KEY = 38;
-var RIGHT_KEY = 39;
-var LEFT_KEY = 37;
-var SPACE = 32;
 
 Player.prototype.draw = function() {
   this.game.ctx.drawImage(
@@ -57,20 +52,6 @@ Player.prototype.draw = function() {
   });
 };
 
-Player.prototype.setListeners = function() {
-  document.onkeydown = function(event) {
-    if (event.keyCode === TOP_KEY) {
-      this.y -= 50;
-      this.vy -= 10;
-    } else if (event.keyCode == SPACE) {
-      this.shoot();
-    } else if (event.keyCode == RIGHT_KEY) {
-      this.x += 10;
-    } else if (event.keyCode == LEFT_KEY) {
-      this.x -= 10;
-    }
-  }.bind(this);
-};
 
 Player.prototype.shoot = function() {
   var bullet = new Bullet(this.game, this.x + this.w, this.y + this.h / 2);
@@ -100,7 +81,5 @@ Player.prototype.move = function() {
     this.vy += gravity;
     this.y += this.vy;
   }
-
-  
 
 };

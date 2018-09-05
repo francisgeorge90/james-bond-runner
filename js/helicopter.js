@@ -22,14 +22,8 @@ function Helicopter(game) {
 
   this.heliPoints = 0;
   
-  this.setListeners();
+  this.game.setListeners();
 }
-
-var W_KEY = 87;
-var D_KEY = 68;
-var A_KEY = 65;
-var S_KEY = 83;
-var E_KEY = 69;
 
 Helicopter.prototype.draw = function() {
   // Documentación drawImage:
@@ -56,22 +50,6 @@ Helicopter.prototype.draw = function() {
     bullet.draw();
     bullet.move();
   });
-};
-
-Helicopter.prototype.setListeners = function() {
-  document.onkeydown = function(event) {
-    if (event.keyCode == W_KEY) {
-      this.y -= 10;
-    } else if (event.keyCode == E_KEY) {
-      this.shoot();
-    } else if (event.keyCode == D_KEY) {
-      this.x += 10;
-    } else if (event.keyCode == A_KEY) {
-      this.x -= 10;
-    } else if (event.keyCode == S_KEY) {
-      this.y += 10;
-    }
-  }.bind(this);
 };
 
 Helicopter.prototype.shoot = function() {

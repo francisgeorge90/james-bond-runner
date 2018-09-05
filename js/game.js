@@ -39,7 +39,13 @@ Game.prototype.start = function() {
     this.clearPlatforms();
     
     if (this.isHeliHit()) {
+      if (this.player.y > 300) {
       this.player.playerPoints += 1;
+      } else if (this.player.y < 350) {
+      this.player.playerPoints += 2;
+      this.drawBonusZone();
+      }  
+
       if(this.player.playerPoints >= 200) {
         this.gameWon();
       }
@@ -85,6 +91,44 @@ Game.prototype.reset = function() {
   this.helicopter = new Helicopter(this);
   this.framesCounter = 0;
   this.platforms = [];
+};
+
+//HELI KEYS
+var W_KEY = 87;
+var D_KEY = 68;
+var A_KEY = 65;
+var S_KEY = 83;
+var E_KEY = 69;
+//PLAYER KEYS
+var TOP_KEY = 38;
+var RIGHT_KEY = 39;
+var LEFT_KEY = 37;
+var SPACE = 32;
+
+Game.prototype.setListeners = function() {
+  document.onkeydown = function(event) {
+    console.log(event.keyCode)
+    if (event.keyCode == W_KEY) {
+      this.helicopter.y -= 10;
+    } else if (event.keyCode == E_KEY) {
+      this.helicopter.shoot();
+    } else if (event.keyCode == D_KEY) {
+      this.helicopter.x += 10;
+    } else if (event.keyCode == A_KEY) {
+      this.helicopter.x -= 10;
+    } else if (event.keyCode == S_KEY) {
+      this.helicopter.y += 10;
+    } else if (event.keyCode === TOP_KEY) {
+      this.player.y -= 50;
+      this.player.vy -= 10;
+    } else if (event.keyCode == SPACE) {
+      this.player.shoot();
+    } else if (event.keyCode == RIGHT_KEY) {
+      this.player.x += 10;
+    } else if (event.keyCode == LEFT_KEY) {
+      this.player.x -= 10;
+    }
+  }.bind(this);
 };
 
 Game.prototype.isLevel = function() {
@@ -166,4 +210,14 @@ Game.prototype.drawPlayerPoints = function() {
   this.ctx.font = "30px sans-serif";
   this.ctx.fillStyle = "green";
   this.ctx.fillText("Player Points: " + this.player.playerPoints + "/200", 50, 50);
+}
+
+Game.prototype.drawBonusZone = function() {
+
+  setTimeout(function(){
+  this.ctx.font = "50px sans-serif";
+  this.ctx.fillStyle = "red";
+  this.ctx.fillText("BONUS ZONE", 600, 600);
+}.bind(this), 3000);
+  
 }
