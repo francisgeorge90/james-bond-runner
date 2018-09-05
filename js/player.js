@@ -22,6 +22,8 @@ function Player(game) {
 
   this.bullets = [];
 
+  this.playerPoints = 0;
+
   this.setListeners();
 }
 
@@ -94,7 +96,6 @@ Player.prototype.move = function() {
   if (this.y >= this.y0) {
     this.vy = 1;
     this.y = this.y0;
-    console.log("off the bar")
   } else {
     this.vy += gravity;
     this.y += this.vy;

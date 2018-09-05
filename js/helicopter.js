@@ -20,7 +20,7 @@ function Helicopter(game) {
 
   this.bullets = [];
 
-  this.heliLives = 10;
+  this.heliPoints = 0;
   
   this.setListeners();
 }

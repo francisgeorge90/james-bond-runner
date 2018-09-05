@@ -39,11 +39,17 @@ Game.prototype.start = function() {
     this.clearPlatforms();
     
     if (this.isHeliHit()) {
-      this.helicopter.heliLives -= 1;
+      this.player.playerPoints += 1;
+      if(this.player.playerPoints >= 200) {
+        this.gameWon();
+      }
     }
     
     if (this.isPlayerHit()) {
-      console.log("he's been hit!")
+      this.helicopter.heliPoints += 1;
+      if (this.helicopter.heliPoints >= 200) {
+        this.gameOver();
+      }
     }
 
     this.isLevel();
@@ -55,10 +61,19 @@ Game.prototype.stop = function() {
   clearInterval(this.interval);
 };
 
+Game.prototype.gameWon = function() {
+  this.stop();
+  
+  if(confirm("PLAYER WON!!! Play again?")) {
+    this.reset();
+    this.start();
+  }
+};
+
 Game.prototype.gameOver = function() {
   this.stop();
   
-  if(confirm("GAME OVER. Play again?")) {
+  if(confirm("GAME OVER. The Helicoper won! Play again?")) {
     this.reset();
     this.start();
   }
@@ -70,7 +85,6 @@ Game.prototype.reset = function() {
   this.helicopter = new Helicopter(this);
   this.framesCounter = 0;
   this.platforms = [];
-  // this.heliLives = 10;
 };
 
 Game.prototype.isLevel = function() {
@@ -85,7 +99,6 @@ Game.prototype.isLevel = function() {
       this.player.vy = 0;
   
       this.player.y = platform.y - this.player.h;
-      console.log("on the bar")
       }
     
 }.bind(this));}
@@ -132,8 +145,8 @@ Game.prototype.draw = function() {
   this.helicopter.draw();
   // this.obstacles.forEach(function(obstacle) { obstacle.draw(); });
   this.platforms.forEach(function(platform) { platform.draw(); });
-  this.drawHeliLives(); 
-   
+  this.drawHeliPoints(); 
+  this.drawPlayerPoints();
 };
 
 Game.prototype.moveAll = function() {
@@ -143,9 +156,14 @@ Game.prototype.moveAll = function() {
   this.platforms.forEach(function(platform) { platform.move(); });
 };
 
-Game.prototype.drawHeliLives = function() {
-  console.log(this.helicopter.heliLives)
+Game.prototype.drawHeliPoints = function() {
+  this.ctx.font = "30px sans-serif";
+  this.ctx.fillStyle = "red";
+  this.ctx.fillText("Heli Points: " + this.helicopter.heliPoints + "/200", 900, 50);
+}
+
+Game.prototype.drawPlayerPoints = function() {
   this.ctx.font = "30px sans-serif";
   this.ctx.fillStyle = "green";
-  this.ctx.fillText(Math.floor(this.helicopter.heliLives), 50, 50);
+  this.ctx.fillText("Player Points: " + this.player.playerPoints + "/200", 50, 50);
 }
