@@ -44,6 +44,10 @@ Game.prototype.start = function() {
         this.generatePlatform();
       }
 
+      // if (this.framesCounter % 500 === 0) {
+      //   this.background.img.src = "img/llama_background.png";
+      // }
+
       this.moveAll();
       this.draw();
 
@@ -191,23 +195,33 @@ Game.prototype.characterMove = function() {
   if (this.topPressed) {
     this.player.y -= 50;
     this.player.vy -= 10;
+    this.player.w = 32 * 2;
+    this.player.h = 34 * 2;
+    this.player.img.src = "img/james_jump.png";
+    this.player.img.frames = 5;
     this.topPressed = false;
   }
   if (this.rightPressed) {
     this.player.x += 10;
     this.player.img.src = "img/bond_right.png";
     this.player.img.frames = 8;
+    this.player.w = 31 * 2;
+    this.player.h = 47 * 2;
   }
   if (this.leftPressed) {
     this.player.x -= 10;
     this.player.img.src = "img/bond_left.png";
     this.player.img.frames = 8;
+    this.player.w = 31 * 2;
+    this.player.h = 47 * 2;
   }
   if (this.spacePressed) {
     this.player.shoot();
     this.gunshot.play();
     this.player.img.src = "img/james_shoot.png";
     this.player.img.frames = 5;
+    this.player.w = 31 * 2;
+    this.player.h = 47 * 2;
 
   }
 };
