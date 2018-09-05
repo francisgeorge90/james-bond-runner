@@ -5,6 +5,27 @@ function Game(canvadId) {
   this.maxRandomY = 550;
   this.minRandomY = 450;
 
+  //HELI KEYS
+  this.W_KEY = 87;
+  this.D_KEY = 68;
+  this.A_KEY = 65;
+  this.S_KEY = 83;
+  this.E_KEY = 69;
+  //PLAYER KEYS
+  this.TOP_KEY = 38;
+  this.RIGHT_KEY = 39;
+  this.LEFT_KEY = 37;
+  this.SPACE = 32;
+  this.wPressed = false;
+  this.dPressed = false;
+  this.aPressed = false;
+  this.sPressed = false;
+  this.ePressed = false;
+  this.topPressed = false;
+  this.rightPressed = false;
+  this.leftPressed = false;
+  this.spacePressed = false;
+
   this.reset();
 }
 
@@ -61,6 +82,7 @@ Game.prototype.start = function() {
     this.isLevel();
 
   }.bind(this), 1000 / this.fps);
+  
 };
 
 Game.prototype.stop = function() {
@@ -91,45 +113,52 @@ Game.prototype.reset = function() {
   this.helicopter = new Helicopter(this);
   this.framesCounter = 0;
   this.platforms = [];
+  this.gunshot = new Sound("sounds/pistol_shot.wav");
+  this.machineGun = new Sound("sounds/machine_gun.ogg");
 };
-
-//HELI KEYS
-var W_KEY = 87;
-var D_KEY = 68;
-var A_KEY = 65;
-var S_KEY = 83;
-var E_KEY = 69;
-//PLAYER KEYS
-var TOP_KEY = 38;
-var RIGHT_KEY = 39;
-var LEFT_KEY = 37;
-var SPACE = 32;
 
 Game.prototype.setListeners = function() {
+
   document.onkeydown = function(event) {
     console.log(event.keyCode)
-    if (event.keyCode == W_KEY) {
-      this.helicopter.y -= 10;
-    } else if (event.keyCode == E_KEY) {
-      this.helicopter.shoot();
-    } else if (event.keyCode == D_KEY) {
-      this.helicopter.x += 10;
-    } else if (event.keyCode == A_KEY) {
-      this.helicopter.x -= 10;
-    } else if (event.keyCode == S_KEY) {
-      this.helicopter.y += 10;
-    } else if (event.keyCode === TOP_KEY) {
-      this.player.y -= 50;
-      this.player.vy -= 10;
-    } else if (event.keyCode == SPACE) {
-      this.player.shoot();
-    } else if (event.keyCode == RIGHT_KEY) {
-      this.player.x += 10;
-    } else if (event.keyCode == LEFT_KEY) {
-      this.player.x -= 10;
-    }
+    if (event.keyCode == this.W_KEY) { this.wPressed = true; } 
+    else if (event.keyCode == this.E_KEY) { this.ePressed = true; } 
+    else if (event.keyCode == this.D_KEY) { this.dPressed = true; } 
+    else if (event.keyCode == this.A_KEY) { this.aPressed = true; } 
+    else if (event.keyCode == this.S_KEY) { this.sPressed = true; } 
+    else if (event.keyCode === this.TOP_KEY) { this.topPressed = true; } 
+    else if (event.keyCode == this.SPACE) { this.spacePressed = true; } 
+    else if (event.keyCode == this.RIGHT_KEY) { this.rightPressed = true; } 
+    else if (event.keyCode == this.LEFT_KEY) { this.leftPressed = true; }
+  }.bind(this);
+
+  document.onkeyup = function(event) {
+    if (event.keyCode == this.W_KEY) { this.wPressed = false; } 
+    else if (event.keyCode == this.E_KEY) { this.ePressed = false; } 
+    else if (event.keyCode == this.D_KEY) { this.dPressed = false; } 
+    else if (event.keyCode == this.A_KEY) { this.aPressed = false; } 
+    else if (event.keyCode == this.S_KEY) { this.sPressed = false; } 
+    else if (event.keyCode === this.TOP_KEY) { this.topPressed = false; } 
+    else if (event.keyCode == this.SPACE) { this.spacePressed = false; } 
+    else if (event.keyCode == this.RIGHT_KEY) { this.rightPressed = false; } 
+    else if (event.keyCode == this.LEFT_KEY) { this.leftPressed = false; }
   }.bind(this);
 };
+
+Game.prototype.characterMove = function() {
+  if(this.wPressed) { this.helicopter.y -= 10; }
+  if(this.dPressed) { this.helicopter.x += 10; }
+  if(this.aPressed) { this.helicopter.x -= 10; }
+  if(this.sPressed) { this.helicopter.y += 10; }
+  if(this.ePressed) { this.helicopter.shoot();
+  this.machineGun.play(); }
+  if(this.topPressed) { this.player.y -= 50;
+    this.player.vy -= 10; }
+  if(this.rightPressed) { this.player.x += 10; }
+  if(this.leftPressed) { this.player.x -= 10; }
+  if(this.spacePressed) { this.player.shoot();
+  this.gunshot.play(); }
+}
 
 Game.prototype.isLevel = function() {
 
@@ -196,6 +225,7 @@ Game.prototype.draw = function() {
 Game.prototype.moveAll = function() {
   this.background.move();
   this.player.move();
+  this.characterMove();
   // this.obstacles.forEach(function(obstacle) { obstacle.move(); });
   this.platforms.forEach(function(platform) { platform.move(); });
 };

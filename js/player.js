@@ -57,6 +57,7 @@ Player.prototype.shoot = function() {
   var bullet = new Bullet(this.game, this.x + this.w, this.y + this.h / 2);
 
   this.bullets.push(bullet);
+  this.game.spacePressed = false;
 };
 
 Player.prototype.animateImg = function() {
