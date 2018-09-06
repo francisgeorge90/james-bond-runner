@@ -2,9 +2,10 @@
 <html>
 <head>
   <title>My Game</title>
-
   <!-- IMPORTANTE EL ORDEN -->
   <!-- Si un objeto necesita otro, incluirlo antes -->
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css?family=Black+Ops+One" rel="stylesheet">  
   <script type="text/javascript" src="js/background.js"></script>
   <script type="text/javascript" src="js/sounds.js"></script>
   <script type="text/javascript" src="js/bullet.js"></script>
@@ -15,12 +16,26 @@
   <script type="text/javascript" src="js/game.js"></script>
 
   <script type="text/javascript" src="js/index.js"></script>
-
-  <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
-  <embed src="sounds/goldeneye-n64-theme.mp3" autostart="true" loop="true"
-    width="2" height="0"></embed>
-  <canvas id="canvas" width="1200" height="700"></canvas>
+    <!-- <embed src="sounds/goldeneye-n64-theme.mp3" autostart="true" loop="true"
+    width="2" height="0"></embed> -->
+
+    <!-- <div id="SplashScreen">
+      <h1>Game Title</h1>
+      <input id="StartButton" type="button" value="Start"/>
+      </div>
+      
+      <canvas id="GameCanvas" style="display: none;">Game Stuff</canvas>
+      
+      <script>
+          $("#StartButton").click(function () {
+              $("#SplashScreen").hide();
+              $("#GameCanvas").show();
+          });
+      </script> -->
+
+  <canvas id="GameCanvas" width="1200" height="700"></canvas>
 </body>
 </html>
+

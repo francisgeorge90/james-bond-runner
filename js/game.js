@@ -345,17 +345,17 @@ Game.prototype.moveAll = function() {
 };
 
 Game.prototype.drawHeliPoints = function() {
-  this.ctx.font = "30px sans-serif";
+  this.ctx.font = "30px blackOpsOne";
   this.ctx.fillStyle = "red";
   this.ctx.fillText(
     "Heli Points: " + this.helicopter.heliPoints + "/200",
-    900,
+    850,
     50
   );
 };
 
 Game.prototype.drawPlayerPoints = function() {
-  this.ctx.font = "30px sans-serif";
+  this.ctx.font = "30px blackOpsOne";
   this.ctx.fillStyle = "green";
   this.ctx.fillText(
     "Player Points: " + this.player.playerPoints + "/200",
@@ -367,9 +367,11 @@ Game.prototype.drawPlayerPoints = function() {
 Game.prototype.drawBonusZone = function() {
   setTimeout(
     function() {
-      this.ctx.font = "50px sans-serif";
+      this.ctx.beginPath();
+      this.ctx.font = "50px blackOpsOne";
       this.ctx.fillStyle = "red";
       this.ctx.fillText("BONUS ZONE", 600, 600);
+      this.ctx.closePath();
     }.bind(this),
     3000
   );
