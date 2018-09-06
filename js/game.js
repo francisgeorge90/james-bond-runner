@@ -105,10 +105,14 @@ Game.prototype.stop = function() {
 Game.prototype.gameWon = function() {
   this.stop();
   $("#GameCanvas").remove();
+  $("embed").remove();
   $("body").append("<div id='splashScreen'><div class='writing'><h1>BOND WINS</h1><video id='videoOver' width='320' height='240' controls><source src='img/name_is_Bond.mp4' class='startButton' type='video/mp4'><source src='movie.ogg' type='video/ogg' autostart='true'>Your browser does not support the video tag.</video><h2 id='playAgain'>Play Again?</h2></div></div>");
+  $("body").append("<embed src='sounds/ending.mp3' id='music' autostart='true' width='2' height='0'></embed>")
   $("#playAgain").click(function () {
       $("#splashScreen").remove();
+      $("embed").remove();
       $("body").append("<canvas id='canvas'></canvas>")
+      $("body").append("<embed src='sounds/goldeneye-n64-theme.mp3' id='music' autostart='true' loop='true' width='2' height='0'></embed>")
       var game = new Game("canvas");
       game.start();
    }.bind(this));
@@ -123,9 +127,12 @@ Game.prototype.gameOver = function() {
   this.stop();
   $("#GameCanvas").remove();
   $("body").append("<div id='splashScreen'><div class='writing'><h1>HELI WINS</h1><video id='videoOver' width='320' height='240' controls><source src='img/expect_you_to_die.mp4' class='startButton' type='video/mp4'><source src='movie.ogg' type='video/ogg' autostart='true'>Your browser does not support the video tag.</video><h2 id='playAgain'>Play Again?</h2></div></div>");
+  $("body").append("<embed src='sounds/ending.mp3' id='music' autostart='true' width='2' height='0'></embed>")
   $("#playAgain").click(function () {
       $("#splashScreen").remove();
+      $("embed").remove();
       $("body").append("<canvas id='canvas'></canvas>")
+      $("body").append("<embed src='sounds/goldeneye-n64-theme.mp3' id='music' autostart='true' loop='true' width='2' height='0'></embed>")
       var game = new Game("canvas");
       game.start();
     }.bind(this));
@@ -143,7 +150,7 @@ Game.prototype.reset = function() {
   this.framesCounter = 0;
   this.platforms = [];
   this.gunshot = new Sound("sounds/pistol_shot.wav");
-  this.machineGun = new Sound("sounds/machine_gun.ogg");
+  this.machineGun = new Sound("sounds/machine_gun.mp3");
 };
 
 Game.prototype.setListeners = function() {
@@ -393,18 +400,5 @@ Game.prototype.drawPlayerPoints = function() {
     "Player Points: " + this.player.playerPoints + "/200",
     50,
     50
-  );
-};
-
-Game.prototype.drawBonusZone = function() {
-  setTimeout(
-    function() {
-      this.ctx.beginPath();
-      this.ctx.font = "50px blackOpsOne";
-      this.ctx.fillStyle = "red";
-      this.ctx.fillText("BONUS ZONE", 600, 600);
-      this.ctx.closePath();
-    }.bind(this),
-    3000
   );
 };
