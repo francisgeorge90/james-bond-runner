@@ -73,7 +73,6 @@ Player.prototype.animateImg = function() {
 };
 
 Player.prototype.move = function() {
-  console.log(this.vy)
   // Aumenta la velocidad en el eje y.
   var gravity = 0.4;
 

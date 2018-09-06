@@ -29,6 +29,7 @@ function Game(canvadId) {
   this.spacePressed = false;
   this.moonwalk = false;
   this.dancing = false;
+  
 
   this.reset();
 }
@@ -46,7 +47,7 @@ Game.prototype.start = function() {
       }
 
       // controlamos la velocidad de generación de obstáculos
-      if (this.framesCounter % 160 === 0) {
+      if (this.framesCounter % 200 === 0) {
         this.generatePlatform();
       }
 
@@ -131,7 +132,6 @@ Game.prototype.reset = function() {
 
 Game.prototype.setListeners = function() {
   document.onkeydown = function(event) {
-    console.log(event.keyCode);
     if (event.keyCode == this.W_KEY) {
       this.wPressed = true;
     } else if (event.keyCode == this.E_KEY) {
@@ -171,16 +171,32 @@ Game.prototype.setListeners = function() {
       this.sPressed = false;
     } else if (event.keyCode === this.TOP_KEY) {
       this.topPressed = false;
+      this.player.img.src = "img/bond_right.png";
+      this.player.img.frames = 8;
+      this.player.w = 31 * 2;
+      this.player.h = 47 * 2;
     } else if (event.keyCode == this.SPACE) {
       this.spacePressed = false;
+      this.player.img.src = "img/bond_right.png";
+      this.player.img.frames = 8;
+      this.player.w = 31 * 2;
+      this.player.h = 47 * 2;
     } else if (event.keyCode == this.RIGHT_KEY) {
       this.rightPressed = false;
     } else if (event.keyCode == this.LEFT_KEY) {
       this.leftPressed = false;
+      this.player.img.src = "img/bond_right.png";
+      this.player.img.frames = 8;
+      this.player.w = 31 * 2;
+      this.player.h = 47 * 2;
     } else if (event.keyCode == this.MOONWALK) {
       this.moonwalk = false;
     } else if (event.keyCode == this.DANCING) {
       this.dancing = false;
+      this.player.img.src = "img/bond_right.png";
+      this.player.img.frames = 8;
+      this.player.w = 31 * 2;
+      this.player.h = 47 * 2;
     }
   }.bind(this);
 };
@@ -216,14 +232,14 @@ Game.prototype.characterMove = function() {
     this.topPressed = false;
   }
   if (this.rightPressed) {
-    this.player.x += 10;
+    this.player.x += 5;
     this.player.img.src = "img/bond_right.png";
     this.player.img.frames = 8;
     this.player.w = 31 * 2;
     this.player.h = 47 * 2;
   }
   if (this.leftPressed) {
-    this.player.x -= 10;
+    this.player.x -= 5;
     this.player.img.src = "img/bond_left.png";
     this.player.img.frames = 8;
     this.player.w = 31 * 2;
@@ -238,7 +254,7 @@ Game.prototype.characterMove = function() {
     this.player.h = 47 * 2;
   }
   if (this.moonwalk) {
-    this.player.x -= 10;
+    this.player.x -= 5;
     this.player.img.src = "img/bond_right.png";
     this.player.img.frames = 8;
     this.player.w = 31 * 2;
@@ -350,9 +366,7 @@ Game.prototype.drawHeliPoints = function() {
   this.ctx.font = "30px blackOpsOne";
   this.ctx.fillStyle = "red";
   this.ctx.fillText(
-    "Heli Points: " + this.helicopter.heliPoints + "/200",
-    850,
-    50
+    "Heli Points: " + this.helicopter.heliPoints + "/200", 50, 100
   );
 };
 
