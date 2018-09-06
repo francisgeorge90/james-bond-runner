@@ -4,8 +4,8 @@
   <title>My Game</title>
   <!-- IMPORTANTE EL ORDEN -->
   <!-- Si un objeto necesita otro, incluirlo antes -->
+  <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
   <link rel="stylesheet" type="text/css" href="css/style.css">
-  <link href="https://fonts.googleapis.com/css?family=Black+Ops+One" rel="stylesheet">  
   <script type="text/javascript" src="js/background.js"></script>
   <script type="text/javascript" src="js/sounds.js"></script>
   <script type="text/javascript" src="js/bullet.js"></script>
@@ -21,21 +21,14 @@
     <!-- <embed src="sounds/goldeneye-n64-theme.mp3" autostart="true" loop="true"
     width="2" height="0"></embed> -->
 
-    <!-- <div id="SplashScreen">
-      <h1>Game Title</h1>
-      <input id="StartButton" type="button" value="Start"/>
+    <div id="splashScreen">
+      <div class="writing">
+        <h1>00 Double 0</h1>
+        <img src="img/start_game.png" id="startButton" class="shake" alt="Start Button">
       </div>
-      
-      <canvas id="GameCanvas" style="display: none;">Game Stuff</canvas>
-      
-      <script>
-          $("#StartButton").click(function () {
-              $("#SplashScreen").hide();
-              $("#GameCanvas").show();
-          });
-      </script> -->
+    </div>
 
-  <canvas id="GameCanvas" width="1200" height="700"></canvas>
+        
 </body>
 </html>
 

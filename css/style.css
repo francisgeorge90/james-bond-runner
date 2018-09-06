@@ -2,3 +2,55 @@
   font-family: 'blackOpsOne';
   src: url('../fonts/BlackOpsOne-Regular.ttf');
 }
+
+body {
+  background: url(../img/start_background.jpg);
+  width: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+#splashScreen h1 {
+  color: white;
+  font-family: 'blackOpsOne';
+  font-size: 5em;
+  letter-spacing: 0.25em;
+}
+
+#startButton {
+  width: 200px;
+  
+}
+
+.writing {
+  width: 70%;
+  text-align: center;
+  margin-top: 150px;
+}
+
+@keyframes shake {
+  from,
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translate3d(-10px, 0, 0);
+  }
+
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translate3d(10px, 0, 0);
+  }
+}
+
+.shake:hover {
+  animation-name: shake;
+  animation-duration: 0.5s;
+}

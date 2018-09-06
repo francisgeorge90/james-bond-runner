@@ -1,6 +1,8 @@
 function Game(canvadId) {
   this.canvas = document.getElementById(canvadId);
   this.ctx = this.canvas.getContext("2d");
+  this.canvas.width = window.innerWidth;
+  this.canvas.height = window.innerHeight;
   this.fps = 60;
 
   //HELI KEYS
