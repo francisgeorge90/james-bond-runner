@@ -18,6 +18,7 @@ function Game(canvadId) {
   this.LEFT_KEY = 37;
   this.SPACE = 32;
   this.MOONWALK = 77;
+  this.MONKEYD = 76;
   this.wPressed = false;
   this.dPressed = false;
   this.aPressed = false;
@@ -29,7 +30,7 @@ function Game(canvadId) {
   this.spacePressed = false;
   this.moonwalk = false;
   this.dancing = false;
-  
+  this.monkeyDown = false;
 
   this.reset();
 }
@@ -41,24 +42,19 @@ Game.prototype.start = function() {
 
       this.framesCounter++;
 
-      // controlamos que frameCounter no sea superior a 1000
       if (this.framesCounter > 1000) {
         this.framesCounter = 0;
       }
 
-      // controlamos la velocidad de generación de obstáculos
       if (this.framesCounter % 200 === 0) {
         this.generatePlatform();
       }
 
-      // if (this.framesCounter % 500 === 0) {
-      //   this.background.img.src = "img/llama_background.png";
-      // }
-
       this.moveAll();
       this.draw();
-
       this.clearPlatforms();
+
+      // HELICOPTER HIT AND POINTS
 
       if (this.isHeliHit()) {
         if (this.player.y > 300) {
@@ -67,16 +63,16 @@ Game.prototype.start = function() {
           this.player.playerPoints += 2;
           this.drawBonusZone();
         }
-
         if(this.player.playerPoints >= 190) {
           this.helicopter.img.src = "img/helicopter_crash.png";
           this.helicopter.img.frames = 3;
         }
-
         if (this.player.playerPoints >= 200) {
-          this.gameWon(), 3000
+          this.gameWon()
         }
       }
+
+      // PLAYER HIT AND POINTS
 
       if (this.isPlayerHit()) {
         this.helicopter.heliPoints += 1;
@@ -84,14 +80,14 @@ Game.prototype.start = function() {
           this.gameOver();
         }
       }
-
       if (this.helicopter.platformCollision()) {
         this.gameWon();
       }
+      if (this.helicopter.groundCollision()) {
+        this.gameWon();
+      }
 
-      this.heliBulletsCollision();
       this.playerBulletsCollision();
-
       this.player.isLevel();
     }.bind(this),
     1000 / this.fps
@@ -102,31 +98,36 @@ Game.prototype.stop = function() {
   clearInterval(this.interval);
 };
 
+// IF JAMES BOND WINS
+
 Game.prototype.gameWon = function() {
   this.stop();
   $("#GameCanvas").remove();
   $("embed").remove();
-  $("body").append("<div id='splashScreen'><div class='writing'><h1>BOND WINS</h1><video id='videoOver' width='320' height='240' controls><source src='img/name_is_Bond.mp4' class='startButton' type='video/mp4'><source src='movie.ogg' type='video/ogg' autostart='true'>Your browser does not support the video tag.</video><h2 id='playAgain'>Play Again?</h2></div></div>");
+  $("body").append("<div id='splashScreen'><div class='writing'><h1>BOND WINS</h1><video id='videoOver' width='480' height='360' controls><source src='videos/name_is_Bond.mp4' class='startButton' type='video/mp4'><source src='movie.ogg' type='video/ogg' autostart='true'>Your browser does not support the video tag.</video><h2 id='playAgain'>Play Again?</h2></div></div>");
   $("body").append("<embed src='sounds/ending.mp3' id='music' autostart='true' width='2' height='0'></embed>")
   $("#playAgain").click(function () {
-      $("#splashScreen").remove();
-      $("embed").remove();
-      $("body").append("<canvas id='canvas'></canvas>")
-      $("body").append("<embed src='sounds/goldeneye-n64-theme.mp3' id='music' autostart='true' loop='true' width='2' height='0'></embed>")
-      var game = new Game("canvas");
-      game.start();
+      this.ifPlayAgain();
    }.bind(this));
-
-  // if (confirm("PLAYER WON!!! Play again?")) {
-  //   this.reset();
-  //   this.start();
-  // }
 };
+
+Game.prototype.ifPlayAgain = function() {
+  $("#splashScreen").remove();
+  $("embed").remove();
+  //game.reset();
+  $("body").append("<canvas id='canvas'></canvas>")
+  $("body").append("<embed src='sounds/goldeneye-n64-theme.mp3' id='music' autostart='true' loop='true' width='2' height='0'></embed>")
+  var game = new Game("canvas");
+  game.start();
+}
+
+// IF HELICOPTER WINS
 
 Game.prototype.gameOver = function() {
   this.stop();
   $("#GameCanvas").remove();
-  $("body").append("<div id='splashScreen'><div class='writing'><h1>HELI WINS</h1><video id='videoOver' width='320' height='240' controls><source src='img/expect_you_to_die.mp4' class='startButton' type='video/mp4'><source src='movie.ogg' type='video/ogg' autostart='true'>Your browser does not support the video tag.</video><h2 id='playAgain'>Play Again?</h2></div></div>");
+  $("embed").remove();
+  $("body").append("<div id='splashScreen'><div class='writing'><h1>HELI WINS</h1><video id='videoOver' width='480' height='360' controls><source src='videos/expect_you_to_die.mp4' class='startButton' type='video/mp4'><source src='movie.ogg' type='video/ogg' autostart='true'>Your browser does not support the video tag.</video><h2 id='playAgain'>Play Again?</h2></div></div>");
   $("body").append("<embed src='sounds/ending.mp3' id='music' autostart='true' width='2' height='0'></embed>")
   $("#playAgain").click(function () {
       $("#splashScreen").remove();
@@ -136,12 +137,9 @@ Game.prototype.gameOver = function() {
       var game = new Game("canvas");
       game.start();
     }.bind(this));
-
-  // if (confirm("HELICOPTER WON!! Play again?")) {
-  //   this.reset();
-  //   this.start();
-  // }
 };
+
+// RESET GAME
 
 Game.prototype.reset = function() {
   this.background = new Background(this);
@@ -151,7 +149,11 @@ Game.prototype.reset = function() {
   this.platforms = [];
   this.gunshot = new Sound("sounds/pistol_shot.wav");
   this.machineGun = new Sound("sounds/machine_gun.mp3");
+  this.moonWalk = new Sound("sounds/moonwalk.mp3");
+  this.paco = new Sound("sounds/paco.mp3");
 };
+
+// KEY CONTROLS FOR BOTH HELICOPTER AND JAMES BOND
 
 Game.prototype.setListeners = function() {
   document.onkeydown = function(event) {
@@ -178,6 +180,8 @@ Game.prototype.setListeners = function() {
       this.moonwalk = true;
     } else if (event.keyCode == this.DANCING) {
       this.dancing = true;
+    } else if (event.keyCode == this.MONKEYD) {
+      this.monkeyDown = true;
     }
   }.bind(this);
 
@@ -214,8 +218,18 @@ Game.prototype.setListeners = function() {
       this.player.h = 47 * 2;
     } else if (event.keyCode == this.MOONWALK) {
       this.moonwalk = false;
+      this.moonWalk.stop();
+      $("body").append("<embed src='sounds/bond_theme_continue.mp3' id='music' autostart='true' width='2' height='0'></embed>")
     } else if (event.keyCode == this.DANCING) {
       this.dancing = false;
+      this.player.img.src = "img/bond_right.png";
+      this.player.img.frames = 8;
+      this.player.w = 31 * 2;
+      this.player.h = 47 * 2;
+      this.paco.stop();
+      $("body").append("<embed src='sounds/bond_theme_continue.mp3' id='music' autostart='true' width='2' height='0'></embed>")
+    } else if (event.keyCode == this.MONKEYD) {
+      this.monkeyDown = false;
       this.player.img.src = "img/bond_right.png";
       this.player.img.frames = 8;
       this.player.w = 31 * 2;
@@ -282,29 +296,22 @@ Game.prototype.characterMove = function() {
     this.player.img.frames = 8;
     this.player.w = 31 * 2;
     this.player.h = 47 * 2;
+    $("embed").remove();
+    this.moonWalk.play();
   }
   if (this.dancing) {
     this.player.img.src = "img/james_dancing.png";
     this.player.img.frames = 8;
     this.player.w = 27 * 2;
     this.player.h = 49 * 2;
+    $("embed").remove();
+    this.paco.play();
   }
-};
-
-Game.prototype.heliBulletsCollision = function() {
-  for (var i = 0; i < this.platforms.length; i++) {
-    for (var j = 0; j < this.helicopter.bullets.length; j++) {
-      if (
-        this.platforms[i].x + this.platforms[i].w >
-          this.helicopter.bullets[j].x &&
-        this.helicopter.bullets[j].x > this.platforms[i].x &&
-        this.platforms[i].y + this.platforms[i].h >
-          this.helicopter.bullets[j].y &&
-        this.helicopter.bullets[j].y > this.platforms[i].y
-      ) {
-        this.helicopter.bullets.splice(j);
-      }
-    }
+  if (this.monkeyDown) {
+    this.player.img.src = "img/james_monkey_dance.png";
+    this.player.img.frames = 4;
+    this.player.w = 29 * 2;
+    this.player.h = 60 * 2;
   }
 };
 

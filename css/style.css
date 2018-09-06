@@ -18,9 +18,13 @@ body {
 }
 
 #playAgain {
-  font-family: 'VT323';
+  font-family: 'blackOpsOne';
   font-size: 4em;
   color: white;
+}
+
+#videoOver {
+  margin: -20px;
 }
 
 #splashScreen {
@@ -28,7 +32,7 @@ body {
   background: url(../img/start_background.jpg) 0 0 no-repeat;
   background-size: cover;
   height: 560px;
-  margin: 50px 0;
+  margin: 30px 0;
 }
 
 #splashScreen h1 {
