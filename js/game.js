@@ -11,7 +11,7 @@ function Game(canvadId) {
   this.A_KEY = 65;
   this.S_KEY = 83;
   this.E_KEY = 69;
-  this.DANCING = 75;
+  
   //PLAYER KEYS
   this.TOP_KEY = 38;
   this.RIGHT_KEY = 39;
@@ -19,6 +19,8 @@ function Game(canvadId) {
   this.SPACE = 32;
   this.MOONWALK = 77;
   this.MONKEYD = 76;
+  this.DANCING = 75;
+  this.SHIFT = 16;
   this.wPressed = false;
   this.dPressed = false;
   this.aPressed = false;
@@ -31,6 +33,7 @@ function Game(canvadId) {
   this.moonwalk = false;
   this.dancing = false;
   this.monkeyDown = false;
+  this.hanging = false;
 
   this.reset();
 }
@@ -39,7 +42,7 @@ Game.prototype.start = function() {
   this.interval = setInterval(
     function() {
       this.clear();
-
+      console.log(this.player.vy)
       this.framesCounter++;
 
       if (this.framesCounter > 1000) {
@@ -89,6 +92,7 @@ Game.prototype.start = function() {
 
       this.playerBulletsCollision();
       this.player.isLevel();
+      this.player.catchesHeli();
     }.bind(this),
     1000 / this.fps
   );
@@ -182,6 +186,8 @@ Game.prototype.setListeners = function() {
       this.dancing = true;
     } else if (event.keyCode == this.MONKEYD) {
       this.monkeyDown = true;
+    } else if (event.keyCode == this.SHIFT) {
+      this.hanging = true;
     }
   }.bind(this);
 
@@ -234,6 +240,8 @@ Game.prototype.setListeners = function() {
       this.player.img.frames = 8;
       this.player.w = 31 * 2;
       this.player.h = 47 * 2;
+    } else if (event.keyCode == this.SHIFT) {
+      this.hanging = false;
     }
   }.bind(this);
 };
@@ -312,6 +320,10 @@ Game.prototype.characterMove = function() {
     this.player.img.frames = 4;
     this.player.w = 29 * 2;
     this.player.h = 60 * 2;
+  }
+  if (this.hanging) {
+    this.player.vy = 10;
+    this.player.y += this.player.vy;
   }
 };
 

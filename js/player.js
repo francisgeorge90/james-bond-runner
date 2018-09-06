@@ -105,3 +105,19 @@ Player.prototype.isLevel = function() {
     }.bind(this)
   );
 };
+
+Player.prototype.catchesHeli = function() {
+   if (this.x + this.w > this.game.helicopter.x &&
+    this.game.helicopter.x + this.game.helicopter.w > this.x &&
+    this.y + this.h > this.game.helicopter.y &&
+    this.game.helicopter.y + this.game.helicopter.h > this.y &&
+    this.vy > 0) {
+      this.x = this.game.helicopter.x + this.game.helicopter.w/2;
+      this.y = this.game.helicopter.y + this.game.helicopter.h/2;
+      this.vy = 0;
+      $("embed").remove();
+      this.game.paco.play();
+      } else {
+        this.game.paco.stop();
+      }
+};
