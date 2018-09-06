@@ -104,20 +104,36 @@ Game.prototype.stop = function() {
 
 Game.prototype.gameWon = function() {
   this.stop();
+  $("#GameCanvas").remove();
+  $("body").append("<div id='splashScreen'><div class='writing'><h1>BOND WINS</h1><video id='videoOver' width='320' height='240' controls><source src='img/name_is_Bond.mp4' class='startButton' type='video/mp4'><source src='movie.ogg' type='video/ogg' autostart='true'>Your browser does not support the video tag.</video><h2 id='playAgain'>Play Again?</h2></div></div>");
+  $("#playAgain").click(function () {
+      $("#splashScreen").remove();
+      $("body").append("<canvas id='canvas'></canvas>")
+      var game = new Game("canvas");
+      game.start();
+   }.bind(this));
 
-  if (confirm("PLAYER WON!!! Play again?")) {
-    this.reset();
-    this.start();
-  }
+  // if (confirm("PLAYER WON!!! Play again?")) {
+  //   this.reset();
+  //   this.start();
+  // }
 };
 
 Game.prototype.gameOver = function() {
   this.stop();
+  $("#GameCanvas").remove();
+  $("body").append("<div id='splashScreen'><div class='writing'><h1>HELI WINS</h1><video id='videoOver' width='320' height='240' controls><source src='img/expect_you_to_die.mp4' class='startButton' type='video/mp4'><source src='movie.ogg' type='video/ogg' autostart='true'>Your browser does not support the video tag.</video><h2 id='playAgain'>Play Again?</h2></div></div>");
+  $("#playAgain").click(function () {
+      $("#splashScreen").remove();
+      $("body").append("<canvas id='canvas'></canvas>")
+      var game = new Game("canvas");
+      game.start();
+    }.bind(this));
 
-  if (confirm("HELICOPTER WON!! Play again?")) {
-    this.reset();
-    this.start();
-  }
+  // if (confirm("HELICOPTER WON!! Play again?")) {
+  //   this.reset();
+  //   this.start();
+  // }
 };
 
 Game.prototype.reset = function() {
