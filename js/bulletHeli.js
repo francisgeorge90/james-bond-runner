@@ -9,8 +9,9 @@ function BulletHeli(game, x, y) {
   this.vx = 10;
   this.vy = +10;
 
-  this.heliBulletsCollision();
 }
+
+    //DRAWS HELI BULLET
 
 BulletHeli.prototype.draw = function() {
   this.game.ctx.beginPath();
@@ -20,24 +21,9 @@ BulletHeli.prototype.draw = function() {
   this.game.ctx.closePath();
 }
 
+    //MOVES HELI BULLET
+
 BulletHeli.prototype.move = function() {
   // this.x += this.vx;
   this.y += this.vy
-};
-
-BulletHeli.prototype.heliBulletsCollision = function() {
-  for (var i = 0; i < this.game.platforms.length; i++) {
-    for (var j = 0; j < this.game.helicopter.bullets.length; j++) {
-      if (
-        this.game.platforms[i].x + this.game.platforms[i].w >
-          this.game.helicopter.bullets[j].x &&
-        this.game.helicopter.bullets[j].x > this.game.platforms[i].x &&
-        this.game.platforms[i].y + this.game.platforms[i].h >
-          this.game.helicopter.bullets[j].y &&
-        this.game.helicopter.bullets[j].y > this.game.platforms[i].y
-      ) {
-        this.game.helicopter.bullets.splice(j);
-      }
-    }
-  }
 };

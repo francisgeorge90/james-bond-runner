@@ -121,3 +121,16 @@ Player.prototype.catchesHeli = function() {
         this.game.paco.stop();
       }
 };
+
+Player.prototype.isPlayerHit = function() {
+  return this.game.helicopter.bullets.some(
+    function(bullet) {
+      return (
+        this.x + this.w > bullet.x &&
+        bullet.x > this.x &&
+        this.y + this.h > bullet.y &&
+        bullet.y > this.y
+      );
+    }.bind(this)
+  );
+};

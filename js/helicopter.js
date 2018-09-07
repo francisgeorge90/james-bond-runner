@@ -83,3 +83,16 @@ Helicopter.prototype.platformCollision = function() {
 Helicopter.prototype.groundCollision = function() {
       return (this.game.helicopter.y >= this.game.player.y0)
 };
+
+Helicopter.prototype.isHeliHit = function() {
+  return this.game.player.bullets.some(
+    function(bullet) {
+      return (
+        this.game.helicopter.x + this.game.helicopter.w > bullet.x &&
+        bullet.x > this.game.helicopter.x &&
+        this.game.helicopter.y + this.game.helicopter.h > bullet.y &&
+        bullet.y > this.game.helicopter.y
+      );
+    }.bind(this)
+  );
+};

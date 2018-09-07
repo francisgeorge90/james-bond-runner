@@ -38,6 +38,10 @@ function Game(canvadId) {
   this.reset();
 }
 
+
+      // ======================================================
+      // INTERVAL TIMER - INCLUDES ALL CONDITIONALS EVERY FRAME AND START
+
 Game.prototype.start = function() {
   this.interval = setInterval(
     function() {
@@ -59,12 +63,11 @@ Game.prototype.start = function() {
 
       // HELICOPTER HIT AND POINTS
 
-      if (this.isHeliHit()) {
+      if (this.helicopter.isHeliHit()) {
         if (this.player.y > 300) {
           this.player.playerPoints += 1;
         } else if (this.player.y < 550) {
           this.player.playerPoints += 2;
-          this.drawBonusZone();
         }
         if(this.player.playerPoints >= 190) {
           this.helicopter.img.src = "img/helicopter_crash.png";
@@ -77,7 +80,7 @@ Game.prototype.start = function() {
 
       // PLAYER HIT AND POINTS
 
-      if (this.isPlayerHit()) {
+      if (this.player.isPlayerHit()) {
         this.helicopter.heliPoints += 1;
         if (this.helicopter.heliPoints >= 200) {
           this.gameOver();
@@ -91,12 +94,18 @@ Game.prototype.start = function() {
       }
 
       this.playerBulletsCollision();
+      this.heliBulletsCollision();
       this.player.isLevel();
       this.player.catchesHeli();
     }.bind(this),
     1000 / this.fps
   );
 };
+
+
+
+    // ======================================================
+    // STOP, PLAYER OR HELI WINS, RESET AND PLAY AGAIN OPTIONS
 
 Game.prototype.stop = function() {
   clearInterval(this.interval);
@@ -125,6 +134,8 @@ Game.prototype.ifPlayAgain = function() {
   game.start();
 }
 
+
+
 // IF HELICOPTER WINS
 
 Game.prototype.gameOver = function() {
@@ -143,6 +154,8 @@ Game.prototype.gameOver = function() {
     }.bind(this));
 };
 
+
+
 // RESET GAME
 
 Game.prototype.reset = function() {
@@ -157,10 +170,14 @@ Game.prototype.reset = function() {
   this.paco = new Sound("sounds/paco.mp3");
 };
 
-// KEY CONTROLS FOR BOTH HELICOPTER AND JAMES BOND
+
+
+      // ======================================================
+      // KEY CONTROLS FOR BOTH HELICOPTER AND JAMES BOND
 
 Game.prototype.setListeners = function() {
   document.onkeydown = function(event) {
+    event.preventDefault();
     if (event.keyCode == this.W_KEY) {
       this.wPressed = true;
     } else if (event.keyCode == this.E_KEY) {
@@ -307,14 +324,14 @@ Game.prototype.characterMove = function() {
     $("embed").remove();
     this.moonWalk.play();
   }
-  if (this.dancing) {
-    this.player.img.src = "img/james_dancing.png";
-    this.player.img.frames = 8;
-    this.player.w = 27 * 2;
-    this.player.h = 49 * 2;
-    $("embed").remove();
-    this.paco.play();
-  }
+  // if (this.dancing) {
+  //   this.player.img.src = "img/james_dancing.png";
+  //   this.player.img.frames = 8;
+  //   this.player.w = 27 * 2;
+  //   this.player.h = 49 * 2;
+  //   $("embed").remove();
+  //   this.paco.play();
+  // }
   if (this.monkeyDown) {
     this.player.img.src = "img/james_monkey_dance.png";
     this.player.img.frames = 4;
@@ -326,6 +343,11 @@ Game.prototype.characterMove = function() {
     this.player.y += this.player.vy;
   }
 };
+
+
+
+    // ======================================================
+    // BULLET COLLISIONS WITH PLATFORMS
 
 Game.prototype.playerBulletsCollision = function() {
   for (var i = 0; i < this.platforms.length; i++) {
@@ -342,6 +364,29 @@ Game.prototype.playerBulletsCollision = function() {
   }
 };
 
+Game.prototype.heliBulletsCollision = function() {
+  for (var i = 0; i < this.platforms.length; i++) {
+    for (var j = 0; j < this.helicopter.bullets.length; j++) {
+      if (
+        this.platforms[i].x + this.platforms[i].w >
+          this.helicopter.bullets[j].x &&
+        this.helicopter.bullets[j].x > this.platforms[i].x &&
+        this.platforms[i].y + this.platforms[i].h >
+          this.helicopter.bullets[j].y &&
+        this.helicopter.bullets[j].y > this.platforms[i].y
+      ) {
+        this.helicopter.bullets.splice(j);
+      }
+    }
+  }
+};
+
+
+
+
+    // ======================================================
+    // CLEAR AND GENERATE PLATFORMS
+
 Game.prototype.clearPlatforms = function() {
   this.platforms = this.platforms.filter(function(platform) {
     return platform.x + platform.w >= 0;
@@ -352,31 +397,10 @@ Game.prototype.generatePlatform = function() {
   this.platforms.push(new Platform(this, this.maxRandomY, this.minRandomY));
 };
 
-Game.prototype.isHeliHit = function() {
-  return this.player.bullets.some(
-    function(bullet) {
-      return (
-        this.helicopter.x + this.helicopter.w > bullet.x &&
-        bullet.x > this.helicopter.x &&
-        this.helicopter.y + this.helicopter.h > bullet.y &&
-        bullet.y > this.helicopter.y
-      );
-    }.bind(this)
-  );
-};
 
-Game.prototype.isPlayerHit = function() {
-  return this.helicopter.bullets.some(
-    function(bullet) {
-      return (
-        this.player.x + this.player.w > bullet.x &&
-        bullet.x > this.player.x &&
-        this.player.y + this.player.h > bullet.y &&
-        bullet.y > this.player.y
-      );
-    }.bind(this)
-  );
-};
+
+    // ======================================================
+    // CLEAR, RE-DRAW, AND MOVE ALL ELEMENTS
 
 Game.prototype.clear = function() {
   this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -403,6 +427,11 @@ Game.prototype.moveAll = function() {
     platform.move();
   });
 };
+
+
+
+    // ======================================================
+    // SCOREBOARD
 
 Game.prototype.drawHeliPoints = function() {
   this.ctx.font = "30px blackOpsOne";

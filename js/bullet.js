@@ -10,6 +10,8 @@ function Bullet(game, x, y) {
   this.vy = -10;
 }
 
+  //DRAWS BULLET
+
 Bullet.prototype.draw = function() {
   this.game.ctx.beginPath();
   this.game.ctx.fillStyle = "red";
@@ -17,6 +19,8 @@ Bullet.prototype.draw = function() {
   this.game.ctx.fill();
   this.game.ctx.closePath();
 }
+
+    //MOVES BULLET
 
 Bullet.prototype.move = function() {
   // this.x += this.vx;
