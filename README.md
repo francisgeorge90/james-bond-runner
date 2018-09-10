@@ -4,12 +4,12 @@ DEVELOPED USING: Javascript, JQuery, CANVAS based game.
 
 USER INTERACTION: keyboard.
 
-Helicopter Controls:
+Helicopter Controls:</br>
 W --- Up</br>
-D --- Right
-S --- Down
-A --- Left
-E --- Shoot
+D --- Right</br>
+S --- Down</br>
+A --- Left</br>
+E --- Shoot</br>
 
 James Bond Controls:
 Key Up --- Jump
