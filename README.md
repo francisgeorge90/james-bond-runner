@@ -11,12 +11,12 @@ S --- Down</br>
 A --- Left</br>
 E --- Shoot</br>
 
-James Bond Controls:
-Key Up --- Jump
-Key Right --- Right
-Key Left --- Left
-Space Bar --- Shoot
-SPECIAL FEATURE || Key M --- Moonwalk
+James Bond Controls:</br>
+Key Up --- Jump</br>
+Key Right --- Right</br>
+Key Left --- Left</br>
+Space Bar --- Shoot</br>
+SPECIAL FEATURE || Key M --- Moonwalk</br>
 
 Get ready, its a match to the death! First to the max points wins.
 
