@@ -1,4 +1,4 @@
-# First IH Project</br>Canvas Game, Jaime María Bond-Perez
+# First IH Project, Canvas Game</br>Jaime María Bond-Perez
 
 DEVELOPED USING: Javascript, JQuery, CANVAS based game.
 
