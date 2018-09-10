@@ -5,7 +5,7 @@ DEVELOPED USING: Javascript, JQuery, CANVAS based game.
 USER INTERACTION: keyboard.
 
 Helicopter Controls:
-W --- Up
+W --- Up</br>
 D --- Right
 S --- Down
 A --- Left
